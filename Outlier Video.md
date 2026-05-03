@@ -134,10 +134,133 @@ $$
 Because $p(x)$ does not depend on $\tilde{x}$, the $\nabla_\tilde{x}$ can be moved inside the integral as follows:
 
 $$
-\frac{1}{2} \int_{-\infty}^{\infty}p_\sigma(\tilde{x}) [\nabla_\tilde{x} \log p_\sigma(\tilde{x})]^2d\tilde{x} + \frac{1}{2} \int_{-\infty}^{\infty}p_\sigma(\tilde{x})[s_\theta(\tilde{x})]^2d\tilde{x} - \int_{-\infty}^{\infty} (\int p(x) \nabla_\tilde{x} p_\sigma(\tilde{x}|x)dx) \cdot s_\theta(\tilde{x})d\tilde{x}
+\frac{1}{2} \int_{-\infty}^{\infty}p_\sigma(\tilde{x}) [\nabla_\tilde{x} \log p_\sigma(\tilde{x})]^2d\tilde{x} + \frac{1}{2} \int_{-\infty}^{\infty}p_\sigma(\tilde{x})[s_\theta(\tilde{x})]^2d\tilde{x} - \int_{-\infty}^{\infty} (\int_x p(x) \nabla_\tilde{x} p_\sigma(\tilde{x}|x)dx) \cdot s_\theta(\tilde{x})d\tilde{x}
 $$
 
 Using a weird trick,
 $$
 \nabla_\tilde{x} \log p_\sigma(\tilde{x}|x) = \frac{\nabla_\tilde{x}p_\sigma(\tilde{x}|x)}{p_\sigma(\tilde{x}|x)} \implies \nabla_\tilde{x}p_\sigma(\tilde{x}|x) = p_\sigma(\tilde{x}|x)\nabla_\tilde{x}\log p_\sigma(\tilde{x}|x)
 $$
+$$
+... = \frac{1}{2} \int_{-\infty}^{\infty}p_\sigma(\tilde{x}) [\nabla_\tilde{x} \log p_\sigma(\tilde{x})]^2d\tilde{x} + \frac{1}{2} \int_{-\infty}^{\infty}p_\sigma(\tilde{x})[s_\theta(\tilde{x})]^2d\tilde{x} - \int_{-\infty}^{\infty} (\int_{-\infty}^{\infty} p(x) p_\sigma(\tilde{x}|x)\nabla_\tilde{x}\log p_\sigma(\tilde{x}|x)dx) \cdot s_\theta(\tilde{x})d\tilde{x}
+$$$$
+= \frac{1}{2} \int_{-\infty}^{\infty}p_\sigma(\tilde{x}) [\nabla_\tilde{x} \log p_\sigma(\tilde{x})]^2d\tilde{x} + \frac{1}{2} \int_{-\infty}^{\infty}p_\sigma(\tilde{x})[s_\theta(\tilde{x})]^2d\tilde{x} - \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} p(x) p_\sigma(\tilde{x}|x)\nabla_\tilde{x}\log p_\sigma(\tilde{x}|x) \cdot s_\theta(\tilde{x}) dx d\tilde{x}
+$$
+Turning this back into expectations:
+
+$$
+= \frac{1}{2} \mathbb{E}_{\tilde{x} \sim p_\sigma(\tilde{x})} [||\nabla_\tilde{x} \log p_\sigma(\tilde{x})||_2^2] + \frac{1}{2} \mathbb{E}_{\tilde{x} \sim p_\sigma(\tilde{x})} [||s_\theta(\tilde{x})||_2^2] - \mathbb{E}_{x \sim p(x), \tilde{x} \sim p_\sigma(\tilde{x}|x)} [\nabla_\tilde{x}\log p_\sigma(\tilde{x}|x) \cdot s_\theta(\tilde{x})]
+$$
+Using marginalization again,
+
+$$
+= \frac{1}{2} \mathbb{E}_{\tilde{x} \sim p_\sigma(\tilde{x})} [||\nabla_\tilde{x} \log p_\sigma(\tilde{x})||_2^2] + \frac{1}{2} \mathbb{E}_{x \sim p(x), \tilde{x} \sim p_\sigma(\tilde{x|x})} [||s_\theta(\tilde{x})||_2^2] - \mathbb{E}_{x \sim p(x), \tilde{x} \sim p_\sigma(\tilde{x}|x)} [\nabla_\tilde{x}\log p_\sigma(\tilde{x}|x) \cdot s_\theta(\tilde{x})]
+$$
+$$
+= \frac{1}{2} \mathbb{E}_{\tilde{x} \sim p_\sigma(\tilde{x})} [||\nabla_\tilde{x} \log p_\sigma(\tilde{x})||_2^2] + \frac{1}{2} \mathbb{E}_{x \sim p(x), \tilde{x} \sim p_\sigma(\tilde{x|x})} [||s_\theta(\tilde{x})||_2^2  - 2 \nabla_\tilde{x}\log p_\sigma(\tilde{x}|x) \cdot s_\theta(\tilde{x})]
+$$
+
+Now, because $(a - b)^2 = a^2 + b^2 -2ab$, we can add and subtract a $||\nabla_\tilde{x} \log p_\sigma(\tilde{x}|x)||_2^2$ to "simplify".
+
+$$
+\frac{1}{2} \mathbb{E}_{\tilde{x} \sim p_\sigma(\tilde{x})} [||\nabla_\tilde{x} \log p_\sigma(\tilde{x})||_2^2] + \frac{1}{2} \mathbb{E}_{x \sim p(x), \tilde{x} \sim p_\sigma(\tilde{x|x})} [||s_\theta(\tilde{x})||_2^2  - 2 \nabla_\tilde{x}\log p_\sigma(\tilde{x}|x) \cdot s_\theta(\tilde{x}) + ||\nabla_\tilde{x} \log p_\sigma(\tilde{x}|x)||_2^2 - ||\nabla_\tilde{x} \log p_\sigma(\tilde{x}|x)||_2^2]
+$$
+
+$$
+ = \frac{1}{2} \mathbb{E}_{\tilde{x} \sim p_\sigma(\tilde{x})} [||\nabla_\tilde{x} \log p_\sigma(\tilde{x})||_2^2] + \frac{1}{2} \mathbb{E}_{x \sim p(x), \tilde{x} \sim p_\sigma(\tilde{x|x})} [||s_\theta(\tilde{x}) - \nabla_\tilde{x} \log p_\sigma(\tilde{x}|x)||_2^2 - ||\nabla_\tilde{x} \log p_\sigma(\tilde{x}|x)||_2^2]
+$$
+We can separate the last term from the expectation:
+
+$$
+ \underbrace{\cancel{\frac{1}{2} \mathbb{E}_{\tilde{x} \sim p_\sigma(\tilde{x})} [||\nabla_\tilde{x} \log p_\sigma(\tilde{x})||_2^2]}}_\text{constant} + \frac{1}{2} \mathbb{E}_{x \sim p(x), \tilde{x} \sim p_\sigma(\tilde{x|x})} [||s_\theta(\tilde{x}) - \nabla_\tilde{x} \log p_\sigma(\tilde{x}|x)||_2^2 ] - \underbrace{\cancel{\frac{1}{2}\mathbb{E}_{x \sim p(x) \tilde{x} \sim p(\tilde{x}|x)}[||\nabla_\tilde{x} \log p_\sigma(\tilde{x}|x)||_2^2]}}_\text{constant}
+$$
+$$
+\implies \frac{1}{2} \mathbb{E}_{x \sim p(x), \tilde{x} \sim p_\sigma(\tilde{x|x})} [||s_\theta(\tilde{x}) - \nabla_\tilde{x} \log p_\sigma(\tilde{x}|x)||_2^2 ]
+$$
+### Conditional density
+
+When we add noise to $x$ to obtain $\tilde{x}$, we can get the conditional density (what I assume to be the probability $p_\sigma(\tilde{x}|x))$ given the specific pair $(x, \tilde{x})$). 
+
+$$
+p_\sigma(\tilde{x}|x) = \frac{1}{(2\pi)^{d/2}\sigma^2}e^{-\frac{1}{2\sigma^2}||\tilde{x} - x||_2^2}
+$$
+Remember that we want to calculate $\nabla_\tilde{x} \log p_\sigma(\tilde{x}|x)$.
+
+$$
+\nabla_\tilde{x} \log p_\sigma(\tilde{x}|x) = \nabla_\tilde{x} \log \frac{1}{(2\pi)^{d/2}\sigma^2}e^{-\frac{1}{2\sigma^2}||\tilde{x} - x||_2^2}
+$$
+$$
+= \cancelto{0}{\nabla_\tilde{x} \log \frac{1}{(2\pi)^{d/2}\sigma^2}} + \nabla_\tilde{x} \log e^{-\frac{1}{2\sigma^2}||\tilde{x} - x||_2^2}
+$$
+$$
+ = -\frac{1}{2\sigma^2}\nabla_\tilde{x}||\tilde{x} - x||_2^2
+$$
+By the chain rule,
+$$
+ -\frac{1}{2\sigma^2}\nabla_\tilde{x}||\tilde{x} - x||_2^2 = -\frac{1}{2\sigma^2} \cdot 2(\tilde{x} - x) = -\frac{1}{\sigma^2} (\tilde{x} - x) = \frac{1}{\sigma^2}(x - \tilde{x})
+$$
+But recall that $\tilde{x} = x + \epsilon$, so:
+$$
+\frac{1}{\sigma^2}(x - \tilde{x}) = \frac{1}{\sigma^2}(x - x - \epsilon) = -\frac{1}{\sigma^2}\epsilon
+$$
+Our objective is now to minimize:
+
+$$
+\frac{1}{2} \mathbb{E}_{x \sim p(x), \tilde{x} \sim p_\sigma(\tilde{x|x})} [||s_\theta(\tilde{x}) -  (-\frac{1}{\sigma^2}\epsilon)||_2^2 ]
+$$
+
+### Summary of training
+
+We started by wanting to estimate the underlying data distribution $p(x)$ using our model $p_\theta(x)$. This is difficult to do directly, so we use the score: $\nabla_x \log p(x)$.
+
+Using math tricks, we can reduce this down, but we eventually still get something difficult to use in practice.
+
+We steal ideas from denoising autoencoders and add noise to all the datapoints giving us the new distribution $p_\sigma(\tilde{x})$. This idea eventually reduces down to a simple training objective: having the scores match the negative of the noise. 
+
+### Sampling
+
+We cannot simply use the score once, as it will likely over-or under-shoot the desired outcome. We can instead use a simple method: move a tiny bit in the score's direction each step for $K$ steps. 
+
+$$
+\tilde{x}_{i+1} = \tilde{x}_i + \alpha \cdot s_\theta(\tilde{x_i})
+$$
+Where $\alpha$ is a scaling factor and $i = 0, 1, 2, ..., K$.
+
+However, this converges only to the mean of the dataset. We can get better results by using $\text{Langevin Dynamics Sampling}$.
+
+$$
+\tilde{x}_{i+1} = \tilde{x}_i + \alpha \cdot s_\theta(\tilde{x}_i) + \sqrt{2\alpha} \cdot \underbrace{\epsilon}_\text{noise}
+$$
+
+### Multiple noise levels
+
+In order to solve the issue of too much noise causing loss of information from the original distribution and too little causing not enough coverage of datapoints, we can simply vary the noise throughout training examples.
+
+We can also give this noise value to our model to help it in training.
+
+$$
+s_\theta(\tilde{x}) \rightarrow s_\theta(\tilde{x}, \sigma_t)
+$$
+
+### SDEs
+
+I might have a skill issue here
+
+
+Stochastic differential equations can be used to model processes with randomness that change over time.
+
+One form is:
+
+$$
+dx = \underbrace{f(x, t)}_\text{drift coeff. }dt + \underbrace{g(t)}_\text{diffusion coeff.} \overbrace{dw}^\text{change in noise}
+$$Our process is
+
+$$
+\tilde{x} = x + \epsilon; \hspace{1cm} \epsilon \sim \mathcal{N}(0, \sigma_t^2I)
+$$There is no drift, so we just have
+
+$$
+\underbrace{dx = g(t)dw}_\text{Forward SDE}
+$$
+In theory, we can solve this and get a formula for sampling
+

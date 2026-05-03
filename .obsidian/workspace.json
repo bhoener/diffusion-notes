@@ -50,7 +50,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -213,7 +213,7 @@
       "bases:Create new base": false
     }
   },
-  "active": "b478b2b996660663",
+  "active": "2ba17d620ab9e731",
   "lastOpenFiles": [
     "Outlier Video.md",
     "Diffusion.md",
