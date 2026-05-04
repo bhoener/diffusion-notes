@@ -50,7 +50,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -213,11 +213,12 @@
       "bases:Create new base": false
     }
   },
-  "active": "2ba17d620ab9e731",
+  "active": "b478b2b996660663",
   "lastOpenFiles": [
+    "scratchpad.ipynb",
+    "Lilian Weng Blogpost.md",
     "Outlier Video.md",
     "Diffusion.md",
-    "Lilian Weng Blogpost.md",
     "Pasted image 20260426164014.png"
   ]
 }
