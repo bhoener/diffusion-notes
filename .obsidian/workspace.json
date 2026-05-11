@@ -48,9 +48,23 @@
               "icon": "lucide-file",
               "title": "Outlier Video"
             }
+          },
+          {
+            "id": "595a093d5047bb6c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Diffusion Transformers Paper.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Diffusion Transformers Paper"
+            }
           }
         ],
-        "currentTab": 2
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -213,11 +227,15 @@
       "bases:Create new base": false
     }
   },
-  "active": "b478b2b996660663",
+  "active": "595a093d5047bb6c",
   "lastOpenFiles": [
+    "Outlier Video.md",
+    "Diffusion Transformers Paper.md",
+    "DDPMTrain.png",
+    "image.png",
+    "DiT.png",
     "scratchpad.ipynb",
     "Lilian Weng Blogpost.md",
-    "Outlier Video.md",
     "Diffusion.md",
     "Pasted image 20260426164014.png"
   ]
